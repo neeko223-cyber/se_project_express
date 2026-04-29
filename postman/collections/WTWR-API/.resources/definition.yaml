@@ -1,0 +1,3 @@
+$kind: collection
+name: WTWR API
+description: API collection for the WTWR (What To Wear) Express backend running on localhost:3001.

@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get User by ID
+method: GET
+url: '{{baseUrl}}/users/userID'
+order: 2000
