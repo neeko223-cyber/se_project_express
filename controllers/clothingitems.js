@@ -1,4 +1,4 @@
-const ClothingItem = require('../models/clothingItem');
+const ClothingItem = require("../models/clothingItem");
 
 const createItem = (req, res) => {
   console.log(req.user._id);
