@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const ClothingItem = require('../models/clothingitem');
+const ClothingItem = require('../models/ClothingItem');
 
 // Create a new clothing item
 router.post('/', async (req, res) => {
@@ -55,9 +55,9 @@ router.delete('/:itemId/likes', async (req, res) => {
       return res.status(404).json({ message: 'Item not found' });
     }
 
-    res.json(updatedItem);
+    return res.json(updatedItem);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
