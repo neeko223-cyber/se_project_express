@@ -13,7 +13,7 @@ const getUsers = (req, res) => {
 };
 
 
-//POST /users
+// POST /users
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
@@ -37,11 +37,11 @@ const getUser = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user ID format" });
-      } else {
-        return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occured on the server" });
       }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid user ID format" });
+      }
+        return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occured on the server" });
     });
 };
 
