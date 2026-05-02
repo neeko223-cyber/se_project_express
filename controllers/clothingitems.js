@@ -83,7 +83,7 @@ const dislikeItem = (req, res) => {
 };
 
 const deleteItem = (req, res) => {
-  ClothingItem.findByIdAndDelete(req.params.itemId)
+  ClothingItem.findByIdAndDelete(req.params.Id)
     .then((item) => {
       if (!item) {
         return res.status(NOT_FOUND).json({ message: "Item not found" });
@@ -96,7 +96,7 @@ const deleteItem = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .json({ message: "Server error" });
+        .json({ message: "An error has occured on the server" });
     });
 };
 
