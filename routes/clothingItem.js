@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const ClothingItem = require("../models/clothingItem");
 const mongoose = require('mongoose');
+const ClothingItem = require("../models/clothingItem");
 const { NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST } = require('../utils/errors');
 
 // Create a new clothing item
