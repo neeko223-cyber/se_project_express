@@ -35,7 +35,7 @@ const deleteItem = (req, res) => {
       return ClothingItem.findByIdAndDelete(itemId)
         .then(() => res.status(200).json({ message: "Item deleted" }));
     })
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ message: "An error has occurred on the server" }));
 };
 
 const likeItem = (req, res) => {
@@ -79,24 +79,6 @@ const dislikeItem = (req, res) => {
       return res
         .status(INTERNAL_SERVER_ERROR)
         .json({ message: "Server error" });
-    });
-};
-
-const deleteItem = (req, res) => {
-  ClothingItem.findByIdAndDelete(req.params.Id)
-    .then((item) => {
-      if (!item) {
-        return res.status(NOT_FOUND).json({ message: "Item not found" });
-      }
-      return res.status(200).json(item);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).json({ message: "Invalid item ID" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .json({ message: "An error has occured on the server" });
     });
 };
 
