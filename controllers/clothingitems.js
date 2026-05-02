@@ -1,4 +1,5 @@
 const ClothingItem = require("../models/clothingItem");
+const { INTERNAL_SERVER_ERROR, BAD_REQUEST } = require("../utils/errors");
 
 const createItem = (req, res) => {
   console.log(req.user._id);
@@ -7,14 +8,14 @@ const createItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })
     .then(item => res.status(201).json(item))
-    .catch(err => res.status(400).json({ error: err.message }));
+    .catch(err => res.status(BAD_REQUEST).json({ error: err.message }));
 
 };
 
 const getItems = (req, res) => {
   ClothingItem.find()
     .then(items => res.json(items))
-    .catch(err => res.status(500).json({ error: err.message }));
+    .catch(err => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
 };
 
 const deleteItem = (req, res) => {
@@ -23,7 +24,7 @@ const deleteItem = (req, res) => {
   ClothingItem.findById(itemId)
     .then((item) => {
       if (!item) {
-        return res.status(404).json({ message: "Item not found" });
+        return res.status(BAD_REQUEST).json({ message: "Item not found" });
       }
 
       // Check if the current user owns the item
@@ -34,17 +35,17 @@ const deleteItem = (req, res) => {
       return ClothingItem.findByIdAndDelete(itemId)
         .then(() => res.status(200).json({ message: "Item deleted" }));
     })
-    .catch((err) => res.status(500).json({ error: err.message }));
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
 };
 
 const likeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
-    { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
+    { $addToSet: { likes: req.user._id } }, 
     { new: true },
   )
     .then((item) => res.status(200).json(item))
-    .catch((err) => res.status(500).json({ error: err.message }));
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
 };
 
 const dislikeItem = (req, res) => {
@@ -54,7 +55,7 @@ const dislikeItem = (req, res) => {
     { new: true },
   )
     .then((item) => res.status(200).json(item))
-    .catch((err) => res.status(500).json({ error: err.message }));
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
 };
 
 

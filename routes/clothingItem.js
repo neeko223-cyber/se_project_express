@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const ClothingItem = require("../models/clothingItem");
+const { NOT_FOUND } = require('../utils/errors');
 
 // Create a new clothing item
 router.post('/', async (req, res) => {
@@ -9,7 +10,7 @@ router.post('/', async (req, res) => {
     await newClothingItem.save();
     res.status(201).json(newClothingItem);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(BAD_REQUEST).json({ error: error.message });
   }
 });
 
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
     const clothingItems = await ClothingItem.find();
     res.json(clothingItems);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 
@@ -33,12 +34,12 @@ router.put('/:itemId/likes', async (req, res) => {
     );
 
     if (!updatedItem) {
-      return res.status(404).json({ message: 'Item not found' });
+      return res.status(NOT_FOUND).json({ message: 'Item not found' });
     }
 
     return res.json(updatedItem);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 
@@ -52,12 +53,12 @@ router.delete('/:itemId/likes', async (req, res) => {
     );
 
     if (!updatedItem) {
-      return res.status(404).json({ message: 'Item not found' });
+      return res.status(NOT_FOUND).json({ message: 'Item not found' });
     }
 
     return res.json(updatedItem);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 
