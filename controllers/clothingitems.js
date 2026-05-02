@@ -8,14 +8,14 @@ const createItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })
     .then(item => res.status(201).json(item))
-    .catch(err => res.status(BAD_REQUEST).json({ error: err.message }));
+    .catch(err => res.status(BAD_REQUEST).json({ message: err.message }));
 
 };
 
 const getItems = (req, res) => {
   ClothingItem.find()
     .then(items => res.json(items))
-    .catch(err => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
+    .catch(err => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
 };
 
 const deleteItem = (req, res) => {
@@ -35,7 +35,7 @@ const deleteItem = (req, res) => {
       return ClothingItem.findByIdAndDelete(itemId)
         .then(() => res.status(200).json({ message: "Item deleted" }));
     })
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
 };
 
 const likeItem = (req, res) => {
@@ -44,20 +44,61 @@ const likeItem = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((item) => res.status(200).json(item))
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
+    .then((item) => {
+      if (!item) {
+        return res.status(NOT_FOUND).json({ message: "Item not found" });
+      }
+      return res.status(200).json(item);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).json({ message: "Invalid item ID" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .json({ message: "Server error" });
+    });
 };
 
 const dislikeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
-    { $pull: { likes: req.user._id } }, // remove _id from the array
+    { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((item) => res.status(200).json(item))
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ error: err.message }));
+    .then((item) => {
+      if (!item) {
+        return res.status(NOT_FOUND).json({ message: "Item not found" });
+      }
+      return res.status(200).json(item);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).json({ message: "Invalid item ID" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .json({ message: "Server error" });
+    });
 };
 
+const deleteItem = (req, res) => {
+  ClothingItem.findByIdAndDelete(req.params.itemId)
+    .then((item) => {
+      if (!item) {
+        return res.status(NOT_FOUND).json({ message: "Item not found" });
+      }
+      return res.status(200).json(item);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).json({ message: "Invalid item ID" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .json({ message: "Server error" });
+    });
+};
 
 
 module.exports = {

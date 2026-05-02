@@ -6,11 +6,24 @@ const { NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST } = require('../utils/erro
 router.post('/', async (req, res) => {
   try {
     const { name, weather, imageUrl, category } = req.body;
-    const newClothingItem = new ClothingItem({ name, weather, imageUrl, category, owner: req.user._id });
-    await newClothingItem.save();
-    res.status(201).json(newClothingItem);
+
+    const newClothingItem = await ClothingItem.create({
+      name,
+      weather,
+      imageUrl,
+      category,
+      owner: req.user._id,
+    });
+
+    return res.status(201).json(newClothingItem);
   } catch (error) {
-    res.status(BAD_REQUEST).json({ error: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(BAD_REQUEST).json({ message: error.message });
+    }
+
+    return res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: 'Server error' });
   }
 });
 
@@ -21,7 +34,7 @@ router.get('/', async (req, res) => {
     res.json(clothingItems);
   } catch (error) {
     console.error(error);
-    res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 });
 
@@ -40,7 +53,13 @@ router.put('/:itemId/likes', async (req, res) => {
 
     return res.json(updatedItem);
   } catch (error) {
-    return res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
+    if (error.name === 'CastError') {
+      return res.status(BAD_REQUEST).json({ message: 'Invalid item ID' });
+    }
+
+    return res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: 'Server error' });
   }
 });
 
@@ -59,7 +78,40 @@ router.delete('/:itemId/likes', async (req, res) => {
 
     return res.json(updatedItem);
   } catch (error) {
-    return res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
+    if (error.name === 'CastError') {
+      return res.status(BAD_REQUEST).json({ message: 'Invalid item ID' });
+    }
+
+    return res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: 'Server error' });
+  }
+});
+
+// Delete an item
+router.delete('/:itemId', async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.itemId)) {
+    return res.status(BAD_REQUEST).json({ message: 'Invalid item ID' });
+  }
+
+  try {
+    const item = await ClothingItem.findById(req.params.itemId);
+
+    if (!item) {
+      return res.status(NOT_FOUND).json({ message: 'Item not found' });
+    }
+
+    await item.deleteOne();
+
+    return res.json(item);
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(BAD_REQUEST).json({ message: 'Invalid item ID' });
+    }
+
+    return res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: 'Server error' });
   }
 });
 
