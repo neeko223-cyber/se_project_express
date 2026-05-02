@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const ClothingItem = require("../models/clothingItem");
-const { NOT_FOUND } = require('../utils/errors');
+const { NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST } = require('../utils/errors');
 
 // Create a new clothing item
 router.post('/', async (req, res) => {
@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
     const clothingItems = await ClothingItem.find();
     res.json(clothingItems);
   } catch (error) {
+    console.error(error);
     res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
