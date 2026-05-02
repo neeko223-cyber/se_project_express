@@ -7,7 +7,7 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
     });
 };
 
@@ -19,7 +19,7 @@ const createUser = (req, res) => {
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       console.error(err);
-      if (err.name === "ValidationError") { 
+      if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });

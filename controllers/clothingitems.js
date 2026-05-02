@@ -8,8 +8,13 @@ const createItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })
     .then(item => res.status(201).json(item))
-    .catch(err => res.status(BAD_REQUEST).json({ message: err.message }));
 
+    .catch((err) => {
+      if (err.name === "ValidationError" || err.name === "CastError") {
+        return res.status(400).json({ message: err.message });
+      }
+      return res.status(500).json({ message: "An error has occurred on the server" });
+    });
 };
 
 const getItems = (req, res) => {

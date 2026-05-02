@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
     res.json(clothingItems);
   } catch (error) {
     console.error(error);
-    res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "An error occurred on the server" });
   }
 });
 
