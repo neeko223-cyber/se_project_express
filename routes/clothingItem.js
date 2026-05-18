@@ -28,17 +28,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all clothing items
-router.get('/', async (req, res) => {
-  try {
-    const clothingItems = await ClothingItem.find();
-    res.json(clothingItems);
-  } catch (error) {
-    console.error(error);
-    res.status(INTERNAL_SERVER_ERROR).json({ message: "An error occurred on the server" });
-  }
-});
-
 // Like an item
 router.put('/:itemId/likes', async (req, res) => {
   try {

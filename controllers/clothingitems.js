@@ -26,12 +26,24 @@ const getItems = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .then((item) => {
       if (!item) {
-        return res.status(NOT_FOUND).json({ message: "Item not found" });
+        return res.status(NOT_FOUND).json({
+          message: "Item not found"
+        });
       }
-      return res.status(200).json({ message: "Item deleted" });
+      if (item.owner.toString() !== req.user._id) {
+        return res.status(403).json({
+          message: "You do not have permission to delete this item"
+        });
+      }
+      return ClothingItem.findByIdAndDelete(itemId)
+        .then(() =>
+          res.status(200).json({
+          message: "Item deleted"
+          })
+        );
     })
     .catch((err) => {
       if (err.name === "CastError") {

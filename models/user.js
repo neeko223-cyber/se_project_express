@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
       message: 'You must enter a valid URL'
     }
   },
+  password: {
+    type: String,
+    required: true,
+    select: false // add the select field
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
