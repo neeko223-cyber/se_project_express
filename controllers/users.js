@@ -67,15 +67,15 @@ const createUser = (req, res) => {
 
         return res.status(201).send(userObj);
       })
-      .catch((err) => {
-        console.error(err);
-        if (err.name === "ValidationError") {
-          return res.status(BAD_REQUEST).send({ message: err.message });
+      .catch((dbErr) => {
+        console.error(dbErr);
+        if (dbErr.name === "ValidationError") {
+          return res.status(BAD_REQUEST).send({ message: dbErr.message });
         }
-        if (err.code === 11000) {
+        if (dbErr.code === 11000) {
           return res.status(CONFLICT).send({ message: "Email already exists" });
         }
-        return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+        return res.status(INTERNAL_SERVER_ERROR).send({ message: dbErr.message });
       });
     });
   });
