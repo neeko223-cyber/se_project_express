@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const {
   BAD_REQUEST,
@@ -7,7 +8,7 @@ const {
   CONFLICT,
  } = require("../utils/errors");
 
-const jwt = require("jsonwebtoken");
+
 const { JWT_SECRET } = require("../utils/config");
 
 const login = (req, res) => {
@@ -46,9 +47,9 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      console.error(err);
+  return bcrypt.genSalt(10, (err, salt) => {
+    if (hashErr) {
+      console.error(hashErr);
       return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
     }
 
@@ -58,7 +59,7 @@ const createUser = (req, res) => {
         return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
       }
 
-    User.create({ name, avatar, email, password: hash })
+    return User.create({ name, avatar, email, password: hash })
       .then((user) => {
         const userObj = user.toObject();
 
