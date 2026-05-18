@@ -47,15 +47,15 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  return bcrypt.genSalt(10, (err, salt) => {
+  return bcrypt.genSalt(10, (hashErr, salt) => {
     if (hashErr) {
       console.error(hashErr);
       return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
     }
 
-    bcrypt.hash(password, salt, (err, hash) => {
-      if (err) {
-        console.error(err);
+    bcrypt.hash(password, salt, (hashErr, hash) => {
+      if (hashErr) {
+        console.error(hashErr);
         return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
       }
 
