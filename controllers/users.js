@@ -53,7 +53,7 @@ const createUser = (req, res) => {
       return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
     }
 
-    bcrypt.hash(password, salt, (err, hash) => {
+    return bcrypt.hash(password, salt, (err, hash) => {
       if (err) {
         console.error(err);
         return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error occurred on the server" });
