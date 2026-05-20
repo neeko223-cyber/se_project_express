@@ -2,8 +2,6 @@ const ClothingItem = require("../models/clothingItem");
 const { INTERNAL_SERVER_ERROR, BAD_REQUEST, NOT_FOUND } = require("../utils/errors");
 
 const createItem = (req, res) => {
-  console.log(req.user._id);
-  console.log(req.body)
   const { name, weather, imageUrl, category } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })

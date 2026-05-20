@@ -7,7 +7,7 @@ const mainRouter = require("./routes/index");
 const auth = require("./middlewares/auth");
 
 const { login, createUser } = require("./controllers/users");
-const { getItems } = require("./controllers/clothingitems.js");
+const { getItems } = require("./controllers/clothingitems");
 
 const app = express();
 
