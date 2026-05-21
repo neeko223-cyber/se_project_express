@@ -31,6 +31,12 @@ const deleteItem = (req, res) => {
           message: "Item not found"
         });
       }
+
+      console.log('Item owner:', item.owner.toString());
+      console.log('Current user:', req.user._id);
+      console.log('Are they equal?', item.owner.toString() === req.user._id);
+
+
       if (item.owner.toString() !== req.user._id) {
         return res.status(403).json({
           message: "You do not have permission to delete this item"
