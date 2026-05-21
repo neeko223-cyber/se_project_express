@@ -91,6 +91,12 @@ router.delete('/:itemId', async (req, res) => {
       return res.status(NOT_FOUND).json({ message: 'Item not found' });
     }
 
+    if (item.owner.toString() !== req.user._id) {
+      return res.status(403).json({
+      message: "You do not have permission to delete this item",
+      });
+    }
+
     await item.deleteOne();
 
     return res.json(item);
