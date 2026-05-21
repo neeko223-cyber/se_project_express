@@ -28,13 +28,21 @@ app.use(express.json());
 app.post("/signin", login);
 app.post("/signup", createUser);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: "5d8b8592978f8bd833ca8133",
+  };
+
+  next();
+});
+
 app.get("/items", getItems);
+app.post("/items", createItem);
+app.put("/items/:itemId/likes", likeItem);
+app.delete("/items/:itemId/likes", dislikeItem);
+app.delete("/items/:itemId", deleteItem);
 
-app.post("/items", auth, createItem);
-app.put("/items/:itemId/likes", auth, likeItem);
-app.delete("/items/:itemId/likes", auth, dislikeItem);
-app.delete("/items/:itemId", auth, deleteItem);
-
+app.use(auth);
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {

@@ -3,6 +3,7 @@ const {
   getUsers,
   createUser,
   getCurrentUser,
+  login,
   updateCurrentUser,
 } = require("../controllers/users");
 
@@ -14,6 +15,7 @@ router.post("/", createUser);
 
 // GET /users/me - get current user (this is the new route!)
 router.get("/me", getCurrentUser);
+router.post("/signin", login);
 router.patch("/me", updateCurrentUser);
 
 module.exports = router;
