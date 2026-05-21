@@ -8,7 +8,6 @@ const {
   CONFLICT,
  } = require("../utils/errors");
 
-
 const { JWT_SECRET } = require("../utils/config");
 
 const login = (req, res) => {
