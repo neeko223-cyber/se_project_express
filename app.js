@@ -40,6 +40,7 @@ app.get("/items", getItems);
 app.post("/items", createItem);
 app.put("/items/:itemId/likes", likeItem);
 app.delete("/items/:itemId/likes", dislikeItem);
+app.delete("/items/:itemId", deleteItem);
 
 app.use(auth);
 app.use("/", mainRouter);
