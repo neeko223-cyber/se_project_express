@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const auth = require("./middlewares/auth");
+
 const mainRouter = require("./routes/index");
 
 const { login, createUser } = require("./controllers/users");
