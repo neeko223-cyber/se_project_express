@@ -30,7 +30,7 @@ app.get("/items", getItems);
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "5d8b8592978f8bd833ca8133",
+    _id: "6a1f91c2c6682a56ba1740eb",
   };
 
   next();
