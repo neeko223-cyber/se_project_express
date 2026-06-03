@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const ClothingItem = require("../models/clothingItem");
-const { NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST, ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT } = require('../utils/errors');
+const { NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST, } = require('../utils/errors');
 
 // Create a new clothing item
 router.post('/', async (req, res) => {
