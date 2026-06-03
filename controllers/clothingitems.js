@@ -1,24 +1,28 @@
 const ClothingItem = require("../models/clothingItem");
-const { INTERNAL_SERVER_ERROR, BAD_REQUEST, NOT_FOUND } = require("../utils/errors");
+const {
+  INTERNAL_SERVER_ERROR,
+  BAD_REQUEST,
+  NOT_FOUND,
+  ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT,
+} = require("../utils/errors");
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl, category } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })
     .then(item => res.status(201).json(item))
-
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
-        return res.status(400).json({ message: err.message });
+        return res.status(BAD_REQUEST).json({ message: err.message });
       }
-      return res.status(500).json({ message: "An error has occurred on the server" });
+      return res.status(INTERNAL_SERVER_ERROR).json({ message: "An error has occurred on the server" });
     });
 };
 
 const getItems = (req, res) => {
   ClothingItem.find()
-    .then(items => res.json(items))
-    .catch(err => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
+    .then((items) => res.json(items))
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
 };
 
 const deleteItem = (req, res) => {
@@ -32,20 +36,15 @@ const deleteItem = (req, res) => {
         });
       }
 
-      console.log('Item owner:', item.owner.toString());
-      console.log('Current user:', req.user._id);
-      console.log('Are they equal?', item.owner.toString() === req.user._id);
-
-
       if (item.owner.toString() !== req.user._id) {
-        return res.status(403).json({
+        return res.status(ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT).json({
           message: "You do not have permission to delete this item"
         });
       }
       return ClothingItem.findByIdAndDelete(itemId)
         .then(() =>
           res.status(200).json({
-          message: "Item deleted"
+            message: "Item deleted",
           })
         );
     })
@@ -107,5 +106,5 @@ module.exports = {
   getItems,
   deleteItem,
   likeItem,
-  dislikeItem
+  dislikeItem,
 };
