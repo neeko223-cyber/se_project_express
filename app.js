@@ -4,8 +4,6 @@ const cors = require('cors');
 
 const mainRouter = require("./routes/index");
 
-const auth = require("./middlewares/auth");
-
 const { login, createUser } = require("./controllers/users");
 const { getItems, createItem, deleteItem, likeItem, dislikeItem, } = require("./controllers/clothingitems");
 
