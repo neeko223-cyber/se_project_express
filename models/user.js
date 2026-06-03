@@ -21,12 +21,6 @@ const userSchema = new mongoose.Schema({
     },
   },
 
-  password: {
-    type: String,
-    required: true,
-    select: false,
-  },
-
   email: {
     type: String,
     required: true,
@@ -37,6 +31,12 @@ const userSchema = new mongoose.Schema({
       },
       message: 'You must enter a valid email address',
     },
+  },
+
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 });
 
