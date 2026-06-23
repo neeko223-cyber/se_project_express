@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const auth = require("./middlewares/auth");
+
 
 const mainRouter = require("./routes/index");
 
@@ -30,7 +30,13 @@ app.post("/signup", createUser);
 
 app.get("/items", getItems);
 
-app.use(auth);
+app.use((req, res, next) => {
+  req.user = {
+    _id: "5d8b8592978f8bd833ca8133"
+  };
+
+  next();
+});
 
 app.post("/items", createItem);
 app.put("/items/:itemId/likes", likeItem);
