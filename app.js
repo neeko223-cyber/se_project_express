@@ -2,12 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-
-
 const mainRouter = require("./routes/index");
 
 const { login, createUser } = require("./controllers/users");
-const { getItems, createItem, deleteItem, likeItem, dislikeItem, } = require("./controllers/clothingitems");
+const { getItems } = require("./controllers/clothingitems");
 
 const app = express();
 
@@ -32,17 +30,11 @@ app.get("/items", getItems);
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "5d8b8592978f8bd833ca8133"
+    _id: "5d8b8592978f8bd833ca8133",
   };
 
   next();
 });
-
-app.post("/items", createItem);
-app.put("/items/:itemId/likes", likeItem);
-app.delete("/items/:itemId/likes", dislikeItem);
-app.delete("/items/:itemId", deleteItem);
-
 
 app.use("/", mainRouter);
 

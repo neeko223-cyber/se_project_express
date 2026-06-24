@@ -37,7 +37,7 @@ const deleteItem = (req, res) => {
       }
 
       if (item.owner.toString() !== req.user._id) {
-        return res.status(ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT).json({
+        return res.status(403).json({
           message: "You do not have permission to delete this item"
         });
       }
