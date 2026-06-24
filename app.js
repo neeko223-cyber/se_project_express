@@ -5,6 +5,7 @@ const cors = require('cors');
 const mainRouter = require("./routes/index");
 
 const { login, createUser } = require("./controllers/users");
+const { getItems } = require("./controllers/clothingitems");
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use(express.json());
 
 app.post("/signin", login);
 app.post("/signup", createUser);
+
+app.get("/items", getItems);
 
 app.use((req, res, next) => {
   req.user = {
