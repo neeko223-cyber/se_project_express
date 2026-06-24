@@ -112,34 +112,22 @@ const getCurrentUser = (req, res) => {
 
 // PATCH /users/me
 const updateCurrentUser = (req, res) => {
-  const userId = req.user._id;
   const { name, avatar } = req.body;
 
   User.findByIdAndUpdate(
-    userId,
+    req.user._id,
     { name, avatar },
-    {
-      new: true,
-      runValidators: true,
-    }
+    { new: true, runValidators: true }
   )
-    .orFail(() => {
-      const error = new Error("User not found");
-      error.name = "DocumentNotFoundError";
-      throw error;
-    })
+    .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      console.error(err);
-
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: "User not found" });
       }
 
       if (err.name === "ValidationError" || err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({
-          message: "Invalid user data",
-        });
+        return res.status(BAD_REQUEST).send({ message: "Invalid user data" });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
@@ -147,5 +135,4 @@ const updateCurrentUser = (req, res) => {
       });
     });
 };
-
 module.exports = { getUsers, createUser, getCurrentUser, login, updateCurrentUser, };
