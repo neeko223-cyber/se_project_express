@@ -3,7 +3,6 @@ const {
   INTERNAL_SERVER_ERROR,
   BAD_REQUEST,
   NOT_FOUND,
-  ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT,
 } = require("../utils/errors");
 
 const createItem = (req, res) => {
