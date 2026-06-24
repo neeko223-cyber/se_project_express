@@ -93,13 +93,15 @@ router.delete('/:itemId', async (req, res) => {
 
     if (item.owner.toString() !== req.user._id) {
       return res.status(403).json({
-      message: "You do not have permission to delete this item",
+       message: "You do not have permission to delete this item",
       });
     }
 
     await item.deleteOne();
 
-    return res.json(item);
+    return res.status(200).json({
+      message: "Item deleted",
+    });
   } catch (error) {
     if (error.name === 'CastError') {
       return res.status(BAD_REQUEST).json({ message: 'Invalid item ID' });
