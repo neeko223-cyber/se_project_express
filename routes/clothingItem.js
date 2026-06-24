@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
       weather,
       imageUrl,
       category,
-      owner: "5d8b8592978f8bd833ca8133",
+      owner: req.user._id,
     });
 
     return res.status(201).json(newClothingItem);
