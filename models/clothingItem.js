@@ -18,7 +18,7 @@ const clothingItemSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        return validator.isURL(value, { require_protocol: true });
+        return validator.isURL(value);
       },
       message: 'You must enter a valid URL',
     }
