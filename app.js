@@ -4,8 +4,6 @@ const cors = require('cors');
 
 const mainRouter = require("./routes/index");
 
-const { login, createUser } = require("./controllers/users");
-
 const app = express();
 
 const { PORT = 3001 } = process.env;
@@ -21,18 +19,6 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-
-app.post("/signin", login);
-app.post("/signup", createUser);
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: "5d8b8592978f8bd833ca8133",
-  };
-
-  next();
-});
-
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {
