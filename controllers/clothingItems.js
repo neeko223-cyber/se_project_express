@@ -21,7 +21,10 @@ const createItem = (req, res) => {
 const getItems = (req, res) => {
   ClothingItem.find()
     .then((items) => res.json(items))
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).json({ message: err.message }));
+    .catch((err) => {
+      console.error(err);
+      res.status(INTERNAL_SERVER_ERROR).json({ message: "An error has occurred on the server" });
+    });
 };
 
 const deleteItem = (req, res) => {

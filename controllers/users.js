@@ -50,6 +50,28 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
+  if (
+    !email ||
+    !password ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    return res.status(BAD_REQUEST).send({
+      message: "The 'email' and 'password' fields are required",
+    });
+  }
+
+  if (
+    !name ||
+    !avatar ||
+    typeof name !== "string" ||
+    typeof avatar !== "string"
+  ) {
+    return res.status(BAD_REQUEST).send({
+      message: "Name, avatar, email, and password are required",
+    });
+  }
+
   return bcrypt.genSalt(10, (hashErr, salt) => {
     if (hashErr) {
       console.error(hashErr);
