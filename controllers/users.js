@@ -6,7 +6,6 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   UNAUTHORIZED,
-  ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT,
  } = require("../utils/errors");
 
 const { JWT_SECRET } = require("../utils/config");
