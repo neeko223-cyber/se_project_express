@@ -3,12 +3,12 @@ const {
   INTERNAL_SERVER_ERROR,
   BAD_REQUEST,
   NOT_FOUND,
+  ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT,
 } = require("../utils/errors");
 
 const createItem = (req, res) => {
-  const { name, weather, imageUrl, category } = req.body;
-
-  ClothingItem.create({ name, weather, imageUrl, category, owner: req.user._id })
+  const { name, weather, imageUrl } = req.body;
+  ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then(item => res.status(201).json(item))
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
@@ -39,7 +39,7 @@ const deleteItem = (req, res) => {
       }
 
       if (String(item.owner) !== String(req.user._id)) {
-        return res.status(403).json({
+        return res.status(ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT).json({
           message: "You do not have permission to delete this item"
         });
       }

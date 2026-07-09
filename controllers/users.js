@@ -5,7 +5,8 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
-  CONFLICT,
+  UNAUTHORIZED,
+  ITEM_EXISTS_BUT_USER_DOESNT_OWN_IT,
  } = require("../utils/errors");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -14,7 +15,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({ message: "Email and password are required" });
+    return res.status(BAD_REQUEST).send({ message: "Email and password are required" });
   }
 
   return User.findUserByCredentials(email, password)
@@ -28,7 +29,7 @@ const login = (req, res) => {
       return res.status(200).send({ token });
     })
     .catch(() =>
-      res.status(401).send({
+      res.status(UNAUTHORIZED).send({
         message: "Incorrect email or password",
       })
     );
