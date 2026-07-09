@@ -6,6 +6,7 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   UNAUTHORIZED,
+  CONFLICT,
  } = require("../utils/errors");
 
 const { JWT_SECRET } = require("../utils/config");
