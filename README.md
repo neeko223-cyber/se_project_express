@@ -16,7 +16,8 @@ Validator.js – Input validation (e.g., URLs)
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
 
-## Video
-Here is a video explaining the process I used in this project:
+## Project Pitch Videos
+Check out these videos, where I describe my project and some challenges I faced while building it:
 
 [NicholasLawrence-ProjectPitch-Project13](https://drive.google.com/file/d/1HVD3E-HzN1xBtOd1MYnOKJbhaWmdPvON/view?usp=sharing)
+[NicholasLawrence-ProjectPitch-Project15]()
