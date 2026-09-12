@@ -18,10 +18,10 @@ if [ ! -f sprint.txt ]; then
 else
   TEXT_OUTPUT=$(cat sprint.txt | tr -d '[:space:]')
 
-  # check if text output matches valid sprint format: 12, 13, 12-ft, or 13-ft
-  if [[ ! $TEXT_OUTPUT =~ ^(12|13)(-ft)?$ ]]; then
+  # check if text output matches valid sprint format: 12, 13, 14, 15, 12-ft, 13-ft, 14-ft, or 15-ft
+  if [[ ! $TEXT_OUTPUT =~ ^(12|13|14|15)(-ft)?$ ]]; then
     print_red "$TEXT_OUTPUT in file 'sprint.txt' is not a valid sprint number!"
-    print_orange "Valid options are: 12, 13, 12-ft, or 13-ft"
+    print_orange "Valid options are: 12, 13, 14, 15, 12-ft, 13-ft, 14-ft, or 15-ft"
     exit 1
   else
     SPRINT_NUMBER=$TEXT_OUTPUT
@@ -31,23 +31,23 @@ fi
 # Extract base sprint number (12 or 13) for file checking
 BASE_SPRINT=$(echo $SPRINT_NUMBER | grep -o '^[0-9]\+')
 
-# Check if base sprint number is not 13
-if [[ $BASE_SPRINT != 13 ]]; then
-  # if there is middlewares/auth.js or middleware/auth.js or utils/config.js, sprint is 13
+# Check if base sprint number is not 15
+if [[ $BASE_SPRINT != 15 ]]; then
+  # if there is middlewares/auth.js or middleware/auth.js or utils/config.js, sprint is 15
   if [ -f middlewares/auth.js ] || [ -f middleware/auth.js ] || [ -f utils/config.js ]; then
     # Preserve the suffix if it was present
     if [[ $SPRINT_NUMBER == *"-ft" ]]; then
-      SPRINT_NUMBER="13-ft"
+      SPRINT_NUMBER="15-ft"
     else
-      SPRINT_NUMBER=13
+      SPRINT_NUMBER=15
     fi
   fi
 fi
 
 # Final validation - check if sprint matches valid options
-if [[ ! $SPRINT_NUMBER =~ ^(12|13)(-ft)?$ ]]; then
+if [[ ! $SPRINT_NUMBER =~ ^(12|13|14|15)(-ft)?$ ]]; then
   print_red "Sprint $SPRINT_NUMBER is not a valid sprint number!"
-  print_orange "Valid options are: 12, 13, 12-ft, or 13-ft"
+  print_orange "Valid options are: 12, 13, 14, 15, 12-ft, 13-ft, 14-ft, or 15-ft"
   exit 1
 fi
 
