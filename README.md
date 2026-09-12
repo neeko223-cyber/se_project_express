@@ -20,4 +20,7 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 Check out these videos, where I describe my project and some challenges I faced while building it:
 
 [NicholasLawrence-ProjectPitch-Project13](https://drive.google.com/file/d/1HVD3E-HzN1xBtOd1MYnOKJbhaWmdPvON/view?usp=sharing)
-[NicholasLawrence-ProjectPitch-Project15]()
+[NicholasLawrence-ProjectPitch-Project15](https://drive.google.com/file/d/1SSW265tX81u0yuefYOoGj1j4A7pikPl3/view?usp=sharing)
+
+## FrontEnd Project
+[NicholasLAwrence-GitRepository-se_project_react] ()
