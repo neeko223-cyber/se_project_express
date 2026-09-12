@@ -43,6 +43,8 @@ const createUser = (req, res, next) => {
         return next(err);
       }
 
+      console.log("HASH:", hash);
+
       return User.create({ name, avatar, email, password: hash })
         .then((user) => {
           const userObj = user.toObject();
