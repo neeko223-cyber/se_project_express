@@ -11,17 +11,25 @@ const { JWT_SECRET } = require("../utils/config");
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return next(new BadRequestError("Invalid data passed to login"));
+  }
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        JWT_SECRET,
-        { expiresIn: "7d" },
-      );
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
 
-      return res.status(200).send({ token });
+      return res.send({ token });
     })
-    .catch(() => next(new UnauthorizedError("Incorrect email or password")));
+    .catch((err) => {
+      if (err.message === "Incorrect email or password") {
+        return next(new UnauthorizedError("Incorrect email or password"));
+      }
+
+      return next(err);
+    });
 };
 
 const getUsers = (req, res, next) => {
@@ -42,8 +50,6 @@ const createUser = (req, res, next) => {
       if (err) {
         return next(err);
       }
-
-      console.log("HASH:", hash);
 
       return User.create({ name, avatar, email, password: hash })
         .then((user) => {
